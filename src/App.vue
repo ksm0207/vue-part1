@@ -1,15 +1,52 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <RoomDetail v-if="this.isOpen"
+           :rooms = "this.rooms"
+           :useIndex = "this.useIndex"
+           @modalClose="modalClose" />
+  <!-- Rooms -->
+  <Rooms :rooms="this.rooms"
+         @modalOpen="modalOpen"/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import roomData from './assets/part1/data/rooms.js';
+import Rooms from './components/Rooms.vue'
+import RoomDetail from './components/RoomDetail.vue'
+
 
 export default {
   name: 'App',
+  data () {
+    return {
+      isOpen : false,
+      useIndex : null,
+      rooms : roomData
+    }
+  },
+
+  methods : {
+    modalOpen : function ($event){
+      console.log("Modal Open : ", $event)
+      if($event != null || $event != undefined) {
+        this.useIndex = $event
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return this.isOpen = !this.isOpen
+    },
+    modalClose: function ($event) {
+      console.log("Modal Close", $event)
+      return this.isOpen = $event
+    },
+  },
+
   components: {
-    HelloWorld
+    Rooms,
+    RoomDetail
+  },
+
+  updated () {
+    console.log("Isopen : ", this.isOpen)
   }
 }
 </script>
